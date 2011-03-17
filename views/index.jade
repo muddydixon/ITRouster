@@ -1,0 +1,38 @@
+header 
+  h1= title
+  - if(error)
+    p.error= error.message
+div#content
+  - if(entries && entries.length > 0)
+    div#entries
+      - entries.forEach(function(entry){
+        div.entry(class= entry.stat, id= entry._id)
+          div.clearFix
+            img.icon(src= entry.user[0].profile_image_url)
+            p.text= entry.text
+          ul.nav
+            li
+              - if(login)
+                - if(entry.join)
+                  a.joined= M.joined
+                - else
+                  a.join= M.join
+              - else
+                a(href='/login')= M.login
+            - if(entry.helpers.length > 0)
+              li.togglejoinlist= M.joinlist
+            - else
+              li.togglejoinlist.nohelpers= M.joinlist
+            li.created= entry.created_at
+            - if(entry.geo && entry.geo.length > 0)
+              li.map= entry.geo
+          - if(entry.helpers.length > 0)
+            ul.helpers(style='display:none')
+              - entry.helpers.forEach(function(helper){
+                li.helper
+                  img.icon(width=24, src= helper.profile_image_url)
+                  span= helper.name
+              - })
+      - })
+
+script(type='text/javascript', charset='utf-8', src='http://platform.twitter.com/anywhere.js?id=RGJEgbTHOKyeFFf2UNJQ&v=1')

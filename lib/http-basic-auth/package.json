@@ -1,0 +1,32 @@
+{
+   'name': 'http-basic-auth',
+   'version': '0.1.0',
+   'main': 'http-basic-auth',
+   'description': 'HTTP Client with basic authentication support',
+   "engines" : { "node" : ">=0.2.0" },
+   'keywords': [
+       'http',
+       'basic',
+       'auth'
+   ],
+   'maintainers': [
+       {
+           'name': 'Tomáš Heran',
+           'email': 'tomas.heran@gmail.com'
+       } 
+   ],
+   'licenses': [
+       {
+           'type': 'bsd',
+       } 
+   ],
+   'repositories': [
+       {
+           'type': 'git',
+           'url': 'http://github.com/ther/http-basic-auth'
+       } 
+   ],
+   'dependencies': {
+       'base64': '>=1.0.1'
+   }
+}

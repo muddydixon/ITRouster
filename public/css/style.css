@@ -1,0 +1,79 @@
+
+body, h1, h2, h3, h4, p, ul, li, table, td, tr, th, div {
+  margin: 0;
+  padding: 0;
+  font: 12pt "メイリオ", Helvetica, Arial, sans-serif;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  color: #00B7FF;
+}
+.clearFix:after {
+  content: "";
+  display: block;
+  clear: both;
+  height: 0.1px;
+}
+
+div#content {
+  margin: 10px;
+}
+
+/* BEGIN
+ *   entry
+ */
+div.entry {
+  margin: 5px 0;
+  width: 560px;
+  border-radius: 5px 0 0 5px;
+  box-shadow: 2px 2px 2px #AAA;
+}
+div.entry:hover {
+  background: #FFD;
+}
+
+div.entry.wanted {
+  border-left: 10px solid #FAA;
+}
+div.entry.processed {
+  border-left: 10px solid #EEA;
+}
+div.entry.closed {
+  border-left: 10px solid #AAF;
+}
+
+div.entry img {
+  margin: 0 5px 5px 0;
+  float: left;
+}
+
+div.entry p {
+}
+
+ul.nav li {
+  display: inline;
+  margin: 0 3px;
+  color: grey;
+  font-size: 10pt;
+}
+
+ul.nav li.nohelpers {
+  color: #DDD;
+}
+/* END
+ *   entry
+ */
+
+/* BEGIN
+ *   helpers
+ */
+ul.helpers li {
+  display: block;
+}
+/* END
+ *   helpers
+ */

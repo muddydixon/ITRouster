@@ -1,0 +1,81 @@
+var qs = require('querystring'),
+    config = require('../config.js'),
+    http = require('http'),
+    basicauth = require('../lib/http-basic-auth/http-basic-auth'),
+    basicauthclient = basicauth.createClient(80, 'stream.twitter.com', false, false, config.twitter),
+    req = basicauthclient.request('GET', '/1/statuses/filter.json?track=anpi', {'host': 'stream.twitter.com'}),
+    mongoose = module.exports.mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/ninsoku');
+
+var models = require(process.cwd() + '/models');
+
+var getUser = function(_user, callback){
+  if(_user){
+    models.User.findOne({id: _user.id}, function(err, user){
+      if(err){
+        console.log('error in findOneId');
+        return false;
+      }
+      if(!user){
+        var user = new models.User({
+            name: _user.name,
+            screen_name: _user.screen_name,
+            id: _user.id,
+            profile_image_url: _user.profile_image_url,
+            loc: _user.location,
+        });
+        user.save(function(err){
+          if(err){
+            console.log('error in save user');
+            return false;
+          }
+          callback(user);
+        });
+      }else{
+        callback(user);
+      }
+    });
+  }else{
+    var user = new models.User({
+      name: _user.name,
+      screen_name: _user.screen_name,
+      id: _user.id,
+      profile_image_url: _user.profile_image_url,
+      loc: _user.location,
+    });
+    user.save(function(err){
+      if(err){
+        console.log('error in save user (no id)');
+        return false;
+      }
+      callback(user);
+    });
+  }
+};
+
+
+req.end();
+req.on('response', function (res) {
+  res.setEncoding('utf8');
+  res.on('data', function(chunk) {
+    try{
+      var data = JSON.parse(chunk);
+      if(data.retweeted_status){
+        return false;
+      }
+      getUser(data.user, function(user){
+        var entry = new models.Entry({
+          user: user._id,
+          id: data.id_str,
+          text: data.text,
+          created_at: data.created_at,
+          stat: 'wanted',
+        });
+        entry.save();
+      });
+    }catch(ex){
+    }
+  })
+})
+
